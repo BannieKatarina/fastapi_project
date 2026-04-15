@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from pydantic import SecretStr
+from pydantic import SecretStr, EmailStr
 from datetime import datetime
 
 
@@ -11,8 +11,10 @@ class Category(BaseModel):
 
 
 class User(BaseModel):
-    id: int
-    name: str
+    username: str
+    first_name: str
+    last_name: str
+    email: EmailStr
     password: SecretStr
 
 
@@ -23,6 +25,7 @@ class Location(BaseModel):
 
 
 class Post(BaseModel):
+    id: int
     title: str
     text: str
     pub_date: datetime
@@ -35,7 +38,8 @@ class Post(BaseModel):
 
 
 class Comment(BaseModel):
+    id: int
     text: str
     post: Post
     created_at: datetime
-    author: datetime
+    author: User

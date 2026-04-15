@@ -1,6 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends, status
 from typing import List
-from src.schemas.classes import Post
+from src.schemas.classes import Post, User
+from src.domain.user.use_cases.get_user_by_login import GetUserByLoginUseCase
+from src.api.depends import get_get_user_by_login_use_case
 
 router = APIRouter()
 posts = []
@@ -33,3 +35,13 @@ async def delete_post(post_id: int):
             posts.pop(post[0])
             return {"message": "Post deleted"}
     raise HTTPException(status_code=404, detail="Post not found")
+
+
+@router.get("/user/{login}", status_code=status.HTTP_200_OK,
+            response_model=User)
+async def get_user_by_login(
+    login: str,
+    use_case: GetUserByLoginUseCase = Depends(get_get_user_by_login_use_case)
+) -> User:
+    user = await use_case.execute(login=login)
+    return user
