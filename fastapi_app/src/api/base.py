@@ -4,7 +4,7 @@ from src.schemas.classes import Post, User
 from src.domain.user.use_cases.get_user_by_login import GetUserByLoginUseCase
 from src.api.depends import get_get_user_by_login_use_case
 
-router = APIRouter()
+router = APIRouter(prefix="/posts")
 posts = []
 
 
