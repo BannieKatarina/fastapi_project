@@ -1,9 +1,10 @@
-from src.infrastructure.sqlite.database import Database
+#from fastapi_app.src.infrastructure.sqlite.database import Base
+from src.infrastructure.sqlite.database import Base
 
 from sqlalchemy.orm import Mapped, mapped_column
 
 
-class User(Database):
+class User(Base):
     __tablename__ = "users"
 
     username: Mapped[str] = mapped_column(primary_key=True, nullable=False, unique=True)

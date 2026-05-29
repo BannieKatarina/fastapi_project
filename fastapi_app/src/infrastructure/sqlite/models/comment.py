@@ -1,10 +1,11 @@
-from src.infrastructure.sqlite.database import Database
+#from fastapi_app.src.infrastructure.sqlite.database import Base
+from src.infrastructure.sqlite.database import Base
 from sqlalchemy import func, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime
 
 
-class Comment(Database):
+class Comment(Base):
     __tablename__ = "comments"
 
     id: Mapped[int] = mapped_column(primary_key=True, nullable=False, unique=True)

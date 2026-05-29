@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from src.api.base import router as base_router
+from src.api.base import router_user
 
 
 def create_app() -> FastAPI:
@@ -14,5 +15,6 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(base_router)
+    app.include_router(router_user)
 
     return app

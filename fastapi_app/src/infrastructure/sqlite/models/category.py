@@ -1,10 +1,11 @@
-from src.infrastructure.sqlite.database import Database
+#from fastapi_app.src.infrastructure.sqlite.database import Base
+from src.infrastructure.sqlite.database import Base
 from sqlalchemy import func
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime
 
 
-class Category(Database):
+class Category(Base):
     __tablename__ = "categories"
 
     title: Mapped[str] = mapped_column(primary_key=True, nullable=False, unique=True)

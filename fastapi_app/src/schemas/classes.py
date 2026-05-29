@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from pydantic import SecretStr, EmailStr
+from pydantic import SecretStr, EmailStr, ConfigDict
 from datetime import datetime
 
 
@@ -8,6 +8,7 @@ class Category(BaseModel):
     description: str
     is_published: bool
     created_at: datetime
+    model_config = ConfigDict(from_attributes=True)
 
 
 class User(BaseModel):
@@ -15,13 +16,15 @@ class User(BaseModel):
     first_name: str
     last_name: str
     email: EmailStr
-    password: SecretStr
+    password: str  # SecretStr
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Location(BaseModel):
     name: str
     is_published: bool
     created_at: datetime
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Post(BaseModel):
@@ -35,6 +38,7 @@ class Post(BaseModel):
     is_published: bool
     created_at: datetime
     image: None
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Comment(BaseModel):
@@ -43,3 +47,4 @@ class Comment(BaseModel):
     post: Post
     created_at: datetime
     author: User
+    model_config = ConfigDict(from_attributes=True)

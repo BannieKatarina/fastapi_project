@@ -2,17 +2,59 @@ from typing import Type
 
 from sqlalchemy.orm import Session
 
-from infrastructure.sqlite.models.post import Post
+from src.infrastructure.sqlite.models.post import Post
+from src.infrastructure.sqlite.models.category import Category
+from src.infrastructure.sqlite.models.location import Location
+from src.infrastructure.sqlite.models.user import User
+from src.schemas.classes import Post as PostSchema
 
 
 class PostRepository:
     def __init__(self):
         self._model: Type[Post] = Post
 
-    def get(self, session: Session, id: int) -> Post:
+    def get_all(self, session: Session) -> list:
+        query = session.query(self._model).all()
+        return query
+
+    def get_one(self, session: Session, post_id: int) -> Post:
         query = (
             session.query(self._model)
-            .where(self._model.id == id)
+            .where(self._model.id == post_id)
         )
-
         return query.scalar()
+
+    def put(self, session: Session, post_id: int,
+            updated_post_data: PostSchema) -> Post:
+        query = (
+            session.query(self._model)
+            .where(self._model.id == post_id)
+        )
+        for key, value in updated_post_data.dict(exclude_unset=True).items():
+            setattr(query, key, value)
+        session.add(query)
+        session.commit()
+        session.refresh(query)
+        return query.scalar()
+
+    def delete(self, session: Session, post_id: int) -> dict:
+        query = (
+            session.query(self._model)
+            .where(self._model.id == post_id)
+        )
+        session.delete(query)
+        session.commit()
+        return {"message": "Post deleted successfully"}
+    
+    def post(self, post: PostSchema, session: Session) -> Post:
+        post.author = (session.query(User)
+                       .where(User.username == post.author))
+        post.category = (session.query(Category)
+                         .where(Category.title == post.category))
+        post.location = (session.query(Location)
+                         .where(Location.name == post.location))
+        query = Post(**post.dict())
+        session.add(query)
+        session.commit()
+        session.refresh(query)
+        return query
