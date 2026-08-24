@@ -3,7 +3,7 @@ from typing import List
 
 from src.infrastructure.sqlite.models import *
 
-from src.schemas.classes import Post as PostSchema
+from src.schemas.classes import PostCreate, Post as PostSchema
 from src.schemas.classes import User as UserSchema
 from src.schemas.classes import Category as CategorySchema
 from src.schemas.classes import Location as LocationSchema
@@ -26,10 +26,10 @@ router_user = APIRouter(prefix="/users")
 @router.post("/", response_model=PostSchema,
              status_code=status.HTTP_201_CREATED)
 async def create_post(
-    post: PostSchema,
+    post: PostCreate,
     use_case: CreatePostUseCase = Depends(create_post_use_case)
-) -> Post:
-    new_post = use_case.execute(new_post=post)
+) -> PostSchema:
+    new_post = await use_case.execute(new_post=post)
     return new_post
 
 

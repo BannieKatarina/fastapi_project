@@ -10,5 +10,5 @@ class Category(Base):
 
     title: Mapped[str] = mapped_column(primary_key=True, nullable=False, unique=True)
     description: Mapped[str] = mapped_column(nullable=True)
-    is_publieshed: Mapped[bool] = mapped_column(default=True)
+    is_published: Mapped[bool] = mapped_column(default=True)
     created_at: Mapped[datetime] = mapped_column(default=func.now())

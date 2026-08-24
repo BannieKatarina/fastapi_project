@@ -41,6 +41,20 @@ class Post(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class PostCreate(BaseModel):
+    id: int
+    title: str
+    text: str
+    pub_date: datetime
+    author: str
+    location: str
+    category: str
+    is_published: bool
+    created_at: datetime
+    image: None
+    model_config = ConfigDict(from_attributes=True)
+
+
 class Comment(BaseModel):
     id: int
     text: str

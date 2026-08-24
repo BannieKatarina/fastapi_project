@@ -9,5 +9,5 @@ class Location(Base):
     __tablename__ = "locations"
 
     name: Mapped[str] = mapped_column(primary_key=True, nullable=False, unique=True)
-    is_publieshed: Mapped[bool] = mapped_column(default=True)
+    is_published: Mapped[bool] = mapped_column(default=True)
     created_at: Mapped[datetime] = mapped_column(default=func.now())

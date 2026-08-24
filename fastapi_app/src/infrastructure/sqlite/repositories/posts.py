@@ -6,7 +6,7 @@ from src.infrastructure.sqlite.models.post import Post
 from src.infrastructure.sqlite.models.category import Category
 from src.infrastructure.sqlite.models.location import Location
 from src.infrastructure.sqlite.models.user import User
-from src.schemas.classes import Post as PostSchema
+from src.schemas.classes import PostCreate, Post as PostSchema
 
 
 class PostRepository:
@@ -45,15 +45,26 @@ class PostRepository:
         session.delete(query)
         session.commit()
         return {"message": "Post deleted successfully"}
-    
-    def post(self, post: PostSchema, session: Session) -> Post:
-        post.author = (session.query(User)
-                       .where(User.username == post.author))
-        post.category = (session.query(Category)
-                         .where(Category.title == post.category))
-        post.location = (session.query(Location)
-                         .where(Location.name == post.location))
-        query = Post(**post.dict())
+
+    def post(self, post: PostCreate, session: Session) -> Post:
+        author = (session.query(User)
+                  .where(User.username == post.author).first())
+        category = (session.query(Category)
+                    .where(Category.title == post.category).first())
+        location = (session.query(Location)
+                    .where(Location.name == post.location).first())
+        query = PostSchema(
+            id=post.id,
+            title=post.title,
+            text=post.text,
+            pub_date=post.pub_date,
+            is_published=post.is_published,
+            created_at=post.created_at,
+            image=post.image,
+            author=author,
+            category=category,
+            location=location
+        )
         session.add(query)
         session.commit()
         session.refresh(query)

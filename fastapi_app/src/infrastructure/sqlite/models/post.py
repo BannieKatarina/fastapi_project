@@ -15,6 +15,6 @@ class Post(Base):
     author: Mapped[str] = mapped_column(ForeignKey("users.username"))
     category: Mapped[str] = mapped_column(ForeignKey("categories.title"))
     location: Mapped[str] = mapped_column(ForeignKey("locations.name"))
-    is_publieshed: Mapped[bool] = mapped_column(default=True)
+    is_published: Mapped[bool] = mapped_column(default=True)
     created_at: Mapped[datetime] = mapped_column(default=func.now())
     image: Mapped[str] = mapped_column(nullable=True)
